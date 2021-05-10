@@ -23,6 +23,14 @@ class CategoryAdapter(private val items:List<CategoryModel>) :RecyclerView.Adapt
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val item = items[position]
 
+        holder.itemView.setOnClickListener {
+            items.forEach{
+                it.checked = false
+            }
+            item.checked = true
+            notifyDataSetChanged()
+        }
+
         holder.itemView.findViewById<TextView>(R.id.tvTitle).text = item.title
         if (item.checked){
             holder.itemView.findViewById<CardView>(R.id.cardCategory).setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.black))

@@ -2,15 +2,8 @@ package com.example.onlineshop
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.onlineshop.cart.CartFragment
 import com.example.onlineshop.databinding.ActivityMainBinding
-import com.example.onlineshop.favorite.FavoriteFragment
-import com.example.onlineshop.home.HomeFragment
-import com.example.onlineshop.profile.ProfileFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
