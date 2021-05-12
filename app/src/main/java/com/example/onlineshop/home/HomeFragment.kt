@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.onlineshop.ViewModel.MainViewModel
 import com.example.onlineshop.adapters.CategoryAdapter
+import com.example.onlineshop.adapters.CategoryCallBack
 import com.example.onlineshop.adapters.TopProductsAdapter
 import com.example.onlineshop.databinding.FragmentHomeBinding
+import com.example.onlineshop.models.CategoryModel
 import com.synnapps.carouselview.CarouselView
 
 
@@ -38,11 +40,20 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater,container,false)
 
+        binding.swipe.setOnRefreshListener {
+            loadData()
+        }
+
         binding.categoryRecyclerVew.layoutManager = LinearLayoutManager(requireActivity(),LinearLayoutManager.HORIZONTAL,false)
 
         viewModel.error.observe(requireActivity(), Observer {
             Toast.makeText(requireContext(),it,Toast.LENGTH_LONG).show()
         })
+
+        viewModel.progress.observe(requireActivity(), Observer {
+            binding.swipe.isRefreshing = it
+        })
+
         viewModel.offerData.observe(requireActivity(), Observer {
                                 carouselView = binding.carouselView
                     carouselView.setImageListener { position, imageView ->
@@ -52,7 +63,13 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.categoryData.observe(requireActivity(), Observer {
-            binding.categoryRecyclerVew.adapter = CategoryAdapter(it ?: emptyList())
+            binding.categoryRecyclerVew.adapter = CategoryAdapter(it ?: emptyList(),
+                object : CategoryCallBack {
+                    override fun onClick(item: CategoryModel) {
+                        viewModel.getProductsByCategory(item.id)
+                    }
+                }
+            )
         })
 
         viewModel.topProductsData.observe(requireActivity(), Observer {

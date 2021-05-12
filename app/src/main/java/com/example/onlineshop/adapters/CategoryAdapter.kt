@@ -11,7 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.onlineshop.R
 import com.example.onlineshop.models.CategoryModel
 
-class CategoryAdapter(private val items:List<CategoryModel>) :RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+interface CategoryCallBack{
+    fun onClick(item:CategoryModel)
+}
+
+class CategoryAdapter(private val items:List<CategoryModel>,val callback:CategoryCallBack) :RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(itemView: View):RecyclerView.ViewHolder(itemView)
 
@@ -27,13 +31,14 @@ class CategoryAdapter(private val items:List<CategoryModel>) :RecyclerView.Adapt
             items.forEach{
                 it.checked = false
             }
+            callback.onClick(item)
             item.checked = true
             notifyDataSetChanged()
         }
 
         holder.itemView.findViewById<TextView>(R.id.tvTitle).text = item.title
         if (item.checked){
-            holder.itemView.findViewById<CardView>(R.id.cardCategory).setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.black))
+            holder.itemView.findViewById<CardView>(R.id.cardCategory).setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.category))
             holder.itemView.findViewById<TextView>(R.id.tvTitle).setTextColor(Color.WHITE)
         }
         else{
